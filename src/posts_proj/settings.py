@@ -110,7 +110,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATCFILES_DIRS = [
+STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'posts' / 'static',
     BASE_DIR / 'profiles' / 'static',
