@@ -5,44 +5,51 @@ from .forms import PostForm
 from profiles.models import Profile
 
 def post_list_and_create(request):
-    form =  PostForm()
+    form =  PostForm(request.POST or None)
 
     if request.is_ajax():
         if form.is_valid():
             author = Profile.objects.get(user=request.user)
-            instance =  form.save(commit=False)
+            instance = form.save(commit=False)
             instance.author = author
             instance.save()
+            return JsonResponse({
+                'title':instance.title,
+                'body':instance.body,
+                'author':instance.author.user.username,
+                'id':instance.id,
+            })
     context = {
         'form':form,
     }
     return render(request, 'posts/main.html', context)
 
 def load_post_data_view(request, num_posts):
-    visible = 3
-    upper = num_posts
-    lower = upper - visible
-    size = Post.objects.all().count()
+    if request.is_ajax():
+        visible = 3
+        upper = num_posts
+        lower = upper - visible
+        size = Post.objects.all().count()
 
-    qs = Post.objects.all()
-    data = []
+        qs = Post.objects.all()
+        data = []
 
-    for obj in qs:
-        item = {
-            'id':obj.id,
-            'title':obj.title,
-            'body':obj.body,
-            'liked': True if request.user in obj.liked.all() else False,
-            'count': obj.like_count,
-            'author':obj.author.user.username,
+        for obj in qs:
+            item = {
+                'id':obj.id,
+                'title':obj.title,
+                'body':obj.body,
+                'liked': True if request.user in obj.liked.all() else False,
+                'count': obj.like_count,
+                'author':obj.author.user.username,
+            }
+            data.append(item)
+            
+        context = {
+            'data':data[lower:upper],
+            'size':size
         }
-        data.append(item)
-        
-    context = {
-        'data':data[lower:upper],
-        'size':size
-    }
-    return JsonResponse (context, safe=False)
+        return JsonResponse (context, safe=False)
 
 def like_unlike_post_view(request):
     if request.is_ajax():

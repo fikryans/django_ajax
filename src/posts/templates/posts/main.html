@@ -15,7 +15,7 @@ Posts
 {% block content %}
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -23,22 +23,24 @@ Posts
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <form action="" method="post">
+            <form id="post-form">
                     {% csrf_token %}
                     {{form|crispy}}
                     
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success">Add</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" id="add-btn" class="btn btn-success">Add</button>
+                    </div>
             </div>
             </form>
         </div>
     </div>
 </div>
 
+<div id="alert-box"></div>
+
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-info mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-info mb-2" data-bs-toggle="modal" data-bs-target="#addPostModal">
     Add post
 </button>
 
