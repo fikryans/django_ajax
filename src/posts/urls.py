@@ -10,6 +10,7 @@ urlpatterns = [
     path('hello-world/', views.helloWorld, name='hello-world'),
     path('data/<int:num_posts>/', views.load_post_data_view, name='load-post'),
     path('like-unlike/', views.like_unlike_post_view, name="like-unlike"),
+    path('<pk>/', views.post_detail, name="post-detail")
 
 ]
 
